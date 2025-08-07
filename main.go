@@ -149,7 +149,8 @@ func (lm *LogMonitor) GenerateReport() {
 	for _, job := range sortedJobs {
 		if job.EndTime == nil {
 			runningJobs++
-			fmt.Printf("RUNNING: PID: %d - Started at %s\n", job.PID, job.StartTime.Format("15:04:05"))
+			fmt.Printf("⚠️  RUNNING: %-25s (PID: %d) - Started at %s\n",
+				job.Name, job.PID, job.StartTime.Format("15:04:05"))
 			continue
 		}
 
@@ -158,12 +159,15 @@ func (lm *LogMonitor) GenerateReport() {
 
 		if job.Duration > errorThreshold {
 			errors++
-			fmt.Printf("ERROR: PID: %d - Duration: %s (>10min)\n", job.PID, durationStr)
+			fmt.Printf("🚨 ERROR:   %-25s (PID: %d) - Duration: %s (>10min)\n",
+				job.Name, job.PID, durationStr)
 		} else if job.Duration > warningThreshold {
 			warnings++
-			fmt.Printf("WARNING: PID: %d - Duration: %s (>5min)\n", job.PID, durationStr)
+			fmt.Printf("⚠️  WARNING: %-25s (PID: %d) - Duration: %s (>5min)\n",
+				job.Name, job.PID, durationStr)
 		} else {
-			fmt.Printf("OK: PID: %d - Duration: %s\n", job.PID, durationStr)
+			fmt.Printf("✅ OK:      %-25s (PID: %d) - Duration: %s\n",
+				job.Name, job.PID, durationStr)
 		}
 	}
 
@@ -172,10 +176,14 @@ func (lm *LogMonitor) GenerateReport() {
 		completedJobs, runningJobs, warnings, errors)
 }
 
-// formatDuration formats duration to human-readable
+// formatDuration formats duration in a human-readable way
 func formatDuration(d time.Duration) string {
-	seconds := int(d.Seconds())
-	return fmt.Sprintf("%d seconds", seconds)
+	if d < time.Minute {
+		return fmt.Sprintf("%ds", int(d.Seconds()))
+	}
+	minutes := int(d.Minutes())
+	seconds := int(d.Seconds()) % 60
+	return fmt.Sprintf("%dm%ds", minutes, seconds)
 }
 
 func main() {
@@ -199,6 +207,6 @@ func main() {
 	// Process jobs to match START/END pairs
 	monitor.ProcessJobs()
 
-	// TODO: Generate and display report
+	// Generate and display report
 	monitor.GenerateReport()
 }
