@@ -174,6 +174,9 @@ func (lm *LogMonitor) GenerateReport() {
 	fmt.Println()
 	fmt.Printf("SUMMARY: %d completed, %d running, %d warnings, %d errors\n",
 		completedJobs, runningJobs, warnings, errors)
+
+	// Write summary to file
+	lm.writeSummaryToFile(completedJobs, runningJobs, warnings, errors)
 }
 
 // formatDuration formats duration in a human-readable way
@@ -184,6 +187,26 @@ func formatDuration(d time.Duration) string {
 	minutes := int(d.Minutes())
 	seconds := int(d.Seconds()) % 60
 	return fmt.Sprintf("%dm%ds", minutes, seconds)
+}
+
+// writeSummaryToFile writes a summary report to a file
+func (lm *LogMonitor) writeSummaryToFile(completed, running, warnings, errors int) {
+	file, err := os.Create("monitoring_report.txt")
+	if err != nil {
+		log.Printf("Warning: Could not create report file: %v", err)
+		return
+	}
+	defer file.Close()
+
+	fmt.Fprintf(file, "Log Monitoring Report - Generated at %s\n", time.Now().Format("2006-01-02 15:04:05"))
+	fmt.Fprintf(file, "=================================================\n")
+	fmt.Fprintf(file, "Jobs Completed: %d\n", completed)
+	fmt.Fprintf(file, "Jobs Running: %d\n", running)
+	fmt.Fprintf(file, "Warnings (>5min): %d\n", warnings)
+	fmt.Fprintf(file, "Errors (>10min): %d\n", errors)
+
+	fmt.Println()
+	log.Println("Report saved to monitoring_report.txt")
 }
 
 func main() {
