@@ -102,3 +102,5 @@ SUMMARY: 8 completed, 0 running, 2 warnings, 4 errors
 
 2025/08/07 17:11:14 Report saved to monitoring_report.txt
 ```
+
+Sample output can be found at `sample_output.txt`

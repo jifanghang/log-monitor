@@ -1,0 +1,65 @@
+## Sample output
+Starting log monitoring for file: logs.log
+
+2025/08/07 17:11:14 Successfully parsed 88 log entries from logs.log
+2025/08/07 17:11:14 Processed 45 unique jobs
+===== LOG MONITORING REPORT =====
+
+🚨 ERROR:   scheduled task 051        (PID: 39547) - Duration: 11m29s (>10min)
+✅ OK:      scheduled task 538        (PID: 26831) - Duration: 2m12s
+⚠️  WARNING: scheduled task 811        (PID: 50295) - Duration: 6m35s (>5min)
+🚨 ERROR:   scheduled task 936        (PID: 62401) - Duration: 10m24s (>10min)
+✅ OK:      background job ulp        (PID: 60134) - Duration: 44s
+🚨 ERROR:   scheduled task 182        (PID: 70808) - Duration: 33m43s (>10min)
+🚨 ERROR:   scheduled task 064        (PID: 85742) - Duration: 12m17s (>10min)
+⚠️  WARNING: scheduled task 672        (PID: 24482) - Duration: 8m36s (>5min)
+🚨 ERROR:   scheduled task 515        (PID: 45135) - Duration: 12m23s (>10min)
+✅ OK:      scheduled task 188        (PID: 23118) - Duration: 39s
+✅ OK:      scheduled task 080        (PID: 67833) - Duration: 3m35s
+🚨 ERROR:   scheduled task 374        (PID: 23703) - Duration: 13m26s (>10min)
+🚨 ERROR:   scheduled task 004        (PID: 22003) - Duration: 11m13s (>10min)
+✅ OK:      scheduled task 521        (PID: 64591) - Duration: 1m50s
+✅ OK:      scheduled task 996        (PID: 90962) - Duration: 1m55s
+✅ OK:      background job you        (PID: 38579) - Duration: 3m33s
+✅ OK:      scheduled task 536        (PID: 24799) - Duration: 7s
+⚠️  WARNING: scheduled task 794        (PID: 87570) - Duration: 7m53s (>5min)
+✅ OK:      background job cmx        (PID: 55722) - Duration: 47s
+✅ OK:      scheduled task 796        (PID: 57672) - Duration: 7s
+✅ OK:      scheduled task 386        (PID: 10515) - Duration: 1m51s
+✅ OK:      scheduled task 946        (PID: 47139) - Duration: 3m26s
+✅ OK:      scheduled task 706        (PID: 33528) - Duration: 3m22s
+✅ OK:      scheduled task 773        (PID: 16168) - Duration: 16s
+✅ OK:      scheduled task 697        (PID: 32904) - Duration: 34s
+⚠️  WARNING: scheduled task 294        (PID: 27222) - Duration: 6m8s (>5min)
+✅ OK:      scheduled task 626        (PID: 32674) - Duration: 1m26s
+✅ OK:      scheduled task 032        (PID: 37980) - Duration: 33s
+✅ OK:      background job dej        (PID: 90812) - Duration: 4m6s
+⚠️  WARNING: scheduled task 268        (PID: 87228) - Duration: 9m28s (>5min)
+⚠️  WARNING: scheduled task 074        (PID: 71766) - Duration: 5m47s (>5min)
+✅ OK:      background job djw        (PID: 36709) - Duration: 50s
+✅ OK:      background job wiy        (PID: 81470) - Duration: 1m3s
+⚠️  RUNNING: scheduled task 016        (PID: 72897) - Started at 12:12:27
+✅ OK:      scheduled task 531        (PID: 62922) - Duration: 49s
+✅ OK:      scheduled task 173        (PID: 75164) - Duration: 1m4s
+🚨 ERROR:   scheduled task 460        (PID: 39860) - Duration: 19m52s (>10min)
+✅ OK:      scheduled task 678        (PID: 96183) - Duration: 4m14s
+✅ OK:      scheduled task 920        (PID: 34189) - Duration: 3m19s
+⚠️  RUNNING: scheduled task 333        (PID: 72029) - Started at 12:03:20
+🚨 ERROR:   background job wmy        (PID: 81258) - Duration: 14m46s (>10min)
+⚠️  WARNING: background job sqm        (PID: 99672) - Duration: 5m13s (>5min)
+⚠️  WARNING: background job xfg        (PID: 86716) - Duration: 5m34s (>5min)
+🚨 ERROR:   background job tqc        (PID: 52532) - Duration: 13m53s (>10min)
+⚠️  WARNING: scheduled task 746        (PID: 98746) - Duration: 7m17s (>5min)
+
+SUMMARY: 43 completed, 2 running, 9 warnings, 10 errors
+
+2025/08/07 17:11:14 Report saved to monitoring_report.txt
+
+
+## monitoring_report.txt
+Log Monitoring Report - Generated at 2025-08-07 17:11:14
+=================================================
+Jobs Completed: 43
+Jobs Running: 2
+Warnings (>5min): 9
+Errors (>10min): 10
