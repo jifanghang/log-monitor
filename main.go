@@ -125,7 +125,58 @@ func (lm *LogMonitor) ProcessJobs() {
 	log.Printf("Processed %d unique jobs", len(lm.jobs))
 }
 
-// TODO: generate report
+// GenerateReport creates a report with warnings and errors based on job durations
+func (lm *LogMonitor) GenerateReport() {
+	const (
+		warningThreshold = 5 * time.Minute  // 5 minutes
+		errorThreshold   = 10 * time.Minute // 10 minutes
+	)
+
+	fmt.Println("===== LOG MONITORING REPORT =====")
+	fmt.Println()
+
+	completedJobs := 0
+	runningJobs := 0
+	warnings := 0
+	errors := 0
+
+	// Sort jobs by start time for better readability
+	var sortedJobs []*Job
+	for _, job := range lm.jobs {
+		sortedJobs = append(sortedJobs, job)
+	}
+
+	for _, job := range sortedJobs {
+		if job.EndTime == nil {
+			runningJobs++
+			fmt.Printf("RUNNING: PID: %d - Started at %s\n", job.PID, job.StartTime.Format("15:04:05"))
+			continue
+		}
+
+		completedJobs++
+		durationStr := formatDuration(job.Duration)
+
+		if job.Duration > errorThreshold {
+			errors++
+			fmt.Printf("ERROR: PID: %d - Duration: %s (>10min)\n", job.PID, durationStr)
+		} else if job.Duration > warningThreshold {
+			warnings++
+			fmt.Printf("WARNING: PID: %d - Duration: %s (>5min)\n", job.PID, durationStr)
+		} else {
+			fmt.Printf("OK: PID: %d - Duration: %s\n", job.PID, durationStr)
+		}
+	}
+
+	fmt.Println()
+	fmt.Printf("SUMMARY: %d completed, %d running, %d warnings, %d errors\n",
+		completedJobs, runningJobs, warnings, errors)
+}
+
+// formatDuration formats duration to human-readable
+func formatDuration(d time.Duration) string {
+	seconds := int(d.Seconds())
+	return fmt.Sprintf("%d seconds", seconds)
+}
 
 func main() {
 	logFile := "logs.log"
@@ -149,4 +200,5 @@ func main() {
 	monitor.ProcessJobs()
 
 	// TODO: Generate and display report
+	monitor.GenerateReport()
 }
