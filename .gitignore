@@ -1,0 +1,26 @@
+# Binaries
+log-monitor
+log-monitor.exe
+
+# Generated reports
+monitoring_report.txt
+
+# Go build artifacts
+*.o
+*.a
+*.so
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
