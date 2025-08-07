@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"testing"
+	"time"
 )
 
 func TestLogMonitor_ParseLogFile(t *testing.T) {
@@ -51,7 +52,53 @@ func TestLogMonitor_ParseLogFile(t *testing.T) {
 		t.Errorf("Expected PID 37980, got %d", monitor.entries[0].PID)
 	}
 }
+func TestLogMonitor_ProcessJobs(t *testing.T) {
+	monitor := NewLogMonitor()
 
+	// Add test entries manually
+	startTime, _ := time.Parse("15:04:05", "11:35:23")
+	endTime, _ := time.Parse("15:04:05", "11:35:56")
+	longEndTime, _ := time.Parse("15:04:05", "11:51:44") // 15+ minutes later
+
+	monitor.entries = []LogEntry{
+		{Timestamp: startTime, JobName: "test task", Action: "START", PID: 12345},
+		{Timestamp: endTime, JobName: "test task", Action: "END", PID: 12345},
+		{Timestamp: startTime, JobName: "long task", Action: "START", PID: 54321},
+		{Timestamp: longEndTime, JobName: "long task", Action: "END", PID: 54321},
+		{Timestamp: startTime, JobName: "incomplete task", Action: "START", PID: 99999},
+	}
+
+	monitor.ProcessJobs()
+
+	// Check that jobs were processed correctly
+	if len(monitor.jobs) != 3 {
+		t.Errorf("Expected 3 jobs, got %d", len(monitor.jobs))
+	}
+
+	// Check completed job
+	jobKey := "test task_12345"
+	if job, exists := monitor.jobs[jobKey]; exists {
+		if job.EndTime == nil {
+			t.Error("Expected job to have end time")
+		}
+		expectedDuration := 33 * time.Second // 11:35:56 - 11:35:23
+		if job.Duration != expectedDuration {
+			t.Errorf("Expected duration %v, got %v", expectedDuration, job.Duration)
+		}
+	} else {
+		t.Error("Expected job not found")
+	}
+
+	// Check incomplete job
+	incompleteKey := "incomplete task_99999"
+	if job, exists := monitor.jobs[incompleteKey]; exists {
+		if job.EndTime != nil {
+			t.Error("Expected incomplete job to have no end time")
+		}
+	} else {
+		t.Error("Expected incomplete job not found")
+	}
+}
 func TestNewLogMonitor(t *testing.T) {
 	monitor := NewLogMonitor()
 

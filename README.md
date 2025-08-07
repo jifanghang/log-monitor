@@ -18,6 +18,16 @@ go build -o log-monitor
 ./log-monitor logs.log
 ```
 
+### Running Tests
+
+```bash
+# Run tests with verbose output
+go test -v
+
+# Run tests with coverage
+go test -cover
+```
+
 ## Log File Format
 
 Following structure expected:
